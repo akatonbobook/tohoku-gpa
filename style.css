@@ -1,7 +1,7 @@
 textarea {
     display: block;
     width: 95%;
-    height: 40em;
+    height: 20em;
     overflow-y: scroll;
     overflow-x: scroll;
     resize: none;
@@ -13,6 +13,9 @@ textarea {
     margin-left: auto;
     margin-right: auto;
     white-space: pre;
+}
+p.intro {
+    margin-left: 40px;
 }
 footer {
     display: flex;

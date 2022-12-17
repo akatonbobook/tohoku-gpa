@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>東北の大学のGPAを計算するJS</title>
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <main>
+            <div>
+                <h1 class="centerize">東北の大学のGPAを計算するJS</h1>
+                <textarea id="rawtext"></textarea>
+                <button id="calcButton" class="calc centerize">計算</button>
+            </div>
+            <div class="centerize">
+                <div>
+                    <div>
+                        <table class="centerize summary">
+                            <tr>
+                                <th>GPA</th>
+                                <td><span id="gpa"></span></td>
+                            </tr>
+                            <tr>
+                                <th>登録単位数</th>
+                                <td><span id="registered"></span></td>
+                            </tr>
+                            <tr>
+                                <th>取得単位数</th>
+                                <td><span id="passed"></span></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div id="details">
+
+                    </div>
+                </div>
+            </div>
+        </main>
+        <footer class="centerize">
+            <p class="copyright">©2022 S.Tommy</p>
+        </footer>
+    </body>
+    <script src="program.js"></script>
+</html>

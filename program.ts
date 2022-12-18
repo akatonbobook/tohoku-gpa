@@ -129,15 +129,10 @@ class SubCategory extends AbstractCategory {
   getTableRow(): HTMLElement[] {
       const rows = new Array<HTMLElement>();
       rows.push(document.createElement('tr'));
-      rows[0].appendChild(document.createElement('td')); 
-      rows[0].appendChild(document.createElement('td'));
-      rows[0].appendChild(document.createElement('td'));
-      rows[0].appendChild(document.createElement('td'));
-      rows[0].appendChild(document.createElement('td'));
-      rows[0].appendChild(document.createElement('td'));
-      rows[0].appendChild(document.createElement('td'));
-      rows[0].appendChild(document.createElement('td'));
-      rows[0].appendChild(document.createElement('td'));
+      for (let i=0; i<9; i++) {
+        rows[0].appendChild(document.createElement('td')); 
+        rows[0].children[i].classList.add('categorytable');
+      }
       rows[0].children[0].appendChild(document.createTextNode(this.name));
       rows[0].children[1].appendChild(document.createTextNode(String(this.countGrade("AA"))));
       rows[0].children[2].appendChild(document.createTextNode(String(this.countGrade("A"))));
@@ -147,15 +142,6 @@ class SubCategory extends AbstractCategory {
       rows[0].children[6].appendChild(document.createTextNode(String(this.countGrade("E"))));
       rows[0].children[7].appendChild(document.createTextNode(String(this.countPassedCredits())));
       rows[0].children[8].appendChild(document.createTextNode(String(Math.round(100*this.calcTotalGradePoint()/this.conutRegisteredCredits())/100)));
-      rows[0].children[0].classList.add('categorytable');
-      rows[0].children[1].classList.add('categorytable');
-      rows[0].children[2].classList.add('categorytable');
-      rows[0].children[3].classList.add('categorytable');
-      rows[0].children[4].classList.add('categorytable');
-      rows[0].children[5].classList.add('categorytable');
-      rows[0].children[6].classList.add('categorytable');
-      rows[0].children[7].classList.add('categorytable');
-      rows[0].children[8].classList.add('categorytable');
       for (const td of rows[0].children) {
         if (td.textContent?.match(/\d+/)) {
           if (td.textContent == '0') {
@@ -206,29 +192,29 @@ class Result {
 }
 
 
+let categories = new Array<Category>();
+const _space = "[\\t ]*";
+  let regStr = " {13}";
+      regStr += `(?<name>[^\\t]+)` + _space;
+      regStr += `(?<teacher>[^\\t]+?)` + _space;
+      regStr += `選択` + _space;
+      regStr += `(?<credits>\\b\\d+(.\\d+)?\\b)` + _space;
+      regStr += `(?<grade>(${Array.from(GradePoint.keys()).join('|')}))` + _space;
+      regStr += `(?<term>\\b\\d{4}\\b)` + _space;
+      regStr += `(?<semester>.+)`;
+const resultReg = new RegExp(regStr);
+const categoryReg = new RegExp("^(?<category>\\S+)$");
+const subCategoryReg = new RegExp("^ {5}(?<subCategory>\\S+)$");
+
 const calcGPA: CalcGPA = function (rawStr) {
   rawStr = zenkaku2hankaku(rawStr);
-  
-  const _space = "[\\t ]*";
-  let regStr = " {13}";
-  regStr += `(?<name>[^\\t]+)` + _space;
-  regStr += `(?<teacher>[^\\t]+?)` + _space;
-  regStr += `選択` + _space;
-  regStr += `(?<credits>\\b\\d+(.\\d+)?\\b)` + _space;
-  regStr += `(?<grade>(${Array.from(GradePoint.keys()).join('|')}))` + _space;
-  regStr += `(?<term>\\b\\d{4}\\b)` + _space;
-  regStr += `(?<semester>.+)`;
-  const reg = new RegExp(regStr);
-  const categoryReg = new RegExp("^(?<category>\\S+)$");
-  const subCategoryReg = new RegExp("^ {5}(?<subCategory>\\S+)$");
-  
   const lines = rawStr.split('\n');
-  const categories = new Array<Category>();
+  categories = [];
   let currentCategory: Category | undefined | null = null;
   let currentSubCategory: SubCategory | undefined | null = null;
   
   for (const line of lines) {
-    const result = line.match(reg);
+    const result = line.match(resultReg);
     const category = line.match(categoryReg);
     const subCategory = line.match(subCategoryReg);
     if (category) {
@@ -242,12 +228,8 @@ const calcGPA: CalcGPA = function (rawStr) {
       currentCategory?.subcategories.find(s => s.name == subCategoryName) || currentCategory?.subcategories.push(new SubCategory(subCategoryName, currentCategory));
       currentSubCategory = currentCategory?.subcategories.find(s => s.name == subCategoryName);
     } else if (result) {
-      const name = result.groups?.name;
-      const grade = <Grade>result.groups?.grade;
-      const credits = Number(result.groups?.credits);
-      const teacher = result.groups?.teacher;
-      const term = Number(result.groups?.term);
-      const semester = result.groups?.semester;
+      const [name, grade, credits, teacher, term, semester] 
+          = [result.groups?.name, <Grade>result.groups?.grade, Number(result.groups?.credits), result.groups?.teacher, Number(result.groups?.term), result.groups?.semester];
       if (!name || !grade || !credits || !teacher || !term || !semester || !currentCategory || !currentSubCategory) continue;
       const r = new Result(name, teacher, credits, grade, term, semester);
       currentCategory?.results.push(r);
@@ -271,45 +253,22 @@ const calcGPA: CalcGPA = function (rawStr) {
   if (registered != 0) {
     const table = document.createElement('table');
     table.classList.add('categorytable');
-    const row = new Array<HTMLElement>();
-    row.push(document.createElement('tr'));
-    row[0].classList.add('categorytable');
-    row[0].appendChild(document.createElement('th'));
-    row[0].children[0].appendChild(document.createTextNode('類'));
-    row[0].children[0].classList.add('categorytable');
-    row[0].appendChild(document.createElement('th'));
-    row[0].children[1].appendChild(document.createTextNode('群'));
-    row[0].children[1].classList.add('categorytable');
-    row[0].appendChild(document.createElement('th'));
-    row[0].children[2].appendChild(document.createTextNode('AA'));
-    row[0].children[2].classList.add('categorytable');
-    row[0].appendChild(document.createElement('th'));
-    row[0].children[3].appendChild(document.createTextNode('A'));
-    row[0].children[3].classList.add('categorytable');
-    row[0].appendChild(document.createElement('th'));
-    row[0].children[4].appendChild(document.createTextNode('B'));
-    row[0].children[4].classList.add('categorytable');
-    row[0].appendChild(document.createElement('th'));
-    row[0].children[5].appendChild(document.createTextNode('C'));
-    row[0].children[5].classList.add('categorytable');
-    row[0].appendChild(document.createElement('th'));
-    row[0].children[6].appendChild(document.createTextNode('D'));
-    row[0].children[6].classList.add('categorytable');
-    row[0].appendChild(document.createElement('th'));
-    row[0].children[7].appendChild(document.createTextNode('E'));
-    row[0].children[7].classList.add('categorytable');
-    row[0].appendChild(document.createElement('th'));
-    row[0].children[8].appendChild(document.createTextNode('取得単位数'));
-    row[0].children[8].classList.add('categorytable');
-    row[0].appendChild(document.createElement('th'));
-    row[0].children[9].appendChild(document.createTextNode('GPA'));
-    row[0].children[9].classList.add('categorytable');
-
-    for (const c of categories) {
-      row.push(...c.getTableRow());
+    const rows = new Array<HTMLElement>();
+    rows.push(document.createElement('tr'));
+    rows[0].classList.add('categorytable');
+    
+    const headers = ['類', '群', 'AA', 'A', 'B', 'C', 'D', 'E', '取得単位数', 'GPA'];
+    for (let i=0; i<10; i++) {
+      rows[0].appendChild(document.createElement('th'));
+      rows[0].children[i].classList.add('categorytable');
+      rows[0].children[i].appendChild(document.createTextNode(headers[i]));
     }
 
-    for (const r of row) {
+    for (const c of categories) {
+      rows.push(...c.getTableRow());
+    }
+
+    for (const r of rows) {
       table.appendChild(r);
     }
     DETAILS.appendChild(table)

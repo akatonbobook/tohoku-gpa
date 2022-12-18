@@ -40,7 +40,7 @@ td.bold {
     font-weight: bolder;
 }
 td.zero {
-    opacity: 0.8;
+    color: #888
 }
 td.categorytable {
     background: #fff9e4

@@ -23,34 +23,41 @@ footer {
 }
 p.copyright {
     margin: 5px 0px;
-    font-size: small;
+    font-size: medium;
 }
-table {
+table.categorytable {
     border-collapse: collapse;
     text-align: center;
     margin-bottom: 40px;
     margin-left: auto;
     margin-right: auto;
-    width: 500px;
 }
-td, th, tr {
+.categorytable * {
     border: 1px solid #000000;
     padding: 3px;
+}
+td.bold {
+    font-weight: bolder;
+}
+td.zero {
+    opacity: 0.8;
+}
+td.categorytable {
     background: #fff9e4
 }
-th {
+th.categorytable {
     background: #bee0ed;
 }
-.category {
+td.category {
     background: #ccc3a3;
 }
-td.vartical-writing {
+.vartical-writing {
     writing-mode: vertical-rl;
 }
-.none-left-border {
+td.none-left-border {
     border-left: none;
 }
-.none-right-border {
+td.none-right-border {
     border-right: none;
 }
 .summary {

@@ -63,6 +63,7 @@ class Category extends AbstractCategory {
         return this._subcategories;
     }
     getTableRow() {
+        var _a;
         const rows = new Array();
         rows.push(document.createElement('tr'));
         rows[0].appendChild(document.createElement('td'));
@@ -73,25 +74,11 @@ class Category extends AbstractCategory {
             rows.push(...sc.getTableRow());
         }
         rows.push(document.createElement('tr'));
-        rows[rows.length - 1].appendChild(document.createElement('td'));
-        rows[rows.length - 1].appendChild(document.createElement('td'));
-        rows[rows.length - 1].appendChild(document.createElement('td'));
-        rows[rows.length - 1].appendChild(document.createElement('td'));
-        rows[rows.length - 1].appendChild(document.createElement('td'));
-        rows[rows.length - 1].appendChild(document.createElement('td'));
-        rows[rows.length - 1].appendChild(document.createElement('td'));
-        rows[rows.length - 1].appendChild(document.createElement('td'));
-        rows[rows.length - 1].appendChild(document.createElement('td'));
+        for (let i = 0; i < 9; i++) {
+            rows[rows.length - 1].appendChild(document.createElement('td'));
+            rows[rows.length - 1].children[i].classList.add('category', 'categorytable');
+        }
         rows[rows.length - 1].children[0].classList.add('none-left-border');
-        rows[rows.length - 1].children[0].classList.add('category');
-        rows[rows.length - 1].children[1].classList.add('category');
-        rows[rows.length - 1].children[2].classList.add('category');
-        rows[rows.length - 1].children[3].classList.add('category');
-        rows[rows.length - 1].children[4].classList.add('category');
-        rows[rows.length - 1].children[5].classList.add('category');
-        rows[rows.length - 1].children[6].classList.add('category');
-        rows[rows.length - 1].children[7].classList.add('category');
-        rows[rows.length - 1].children[8].classList.add('category');
         rows[rows.length - 1].children[1].appendChild(document.createTextNode(String(this.countGrade('AA'))));
         rows[rows.length - 1].children[2].appendChild(document.createTextNode(String(this.countGrade('A'))));
         rows[rows.length - 1].children[3].appendChild(document.createTextNode(String(this.countGrade('B'))));
@@ -100,6 +87,17 @@ class Category extends AbstractCategory {
         rows[rows.length - 1].children[6].appendChild(document.createTextNode(String(this.countGrade('E'))));
         rows[rows.length - 1].children[7].appendChild(document.createTextNode(String(this.countPassedCredits())));
         rows[rows.length - 1].children[8].appendChild(document.createTextNode(String(Math.round(100 * this.calcTotalGradePoint() / this.conutRegisteredCredits()) / 100)));
+        for (const td of rows[rows.length - 1].children) {
+            if ((_a = td.textContent) === null || _a === void 0 ? void 0 : _a.match(/\d+/)) {
+                if (td.textContent == '0') {
+                    td.classList.add('zero');
+                }
+                else {
+                    td.classList.add('bold');
+                }
+                console.log(td);
+            }
+        }
         return rows;
     }
 }
@@ -112,6 +110,7 @@ class SubCategory extends AbstractCategory {
         return this._category;
     }
     getTableRow() {
+        var _a;
         const rows = new Array();
         rows.push(document.createElement('tr'));
         rows[0].appendChild(document.createElement('td'));
@@ -132,6 +131,25 @@ class SubCategory extends AbstractCategory {
         rows[0].children[6].appendChild(document.createTextNode(String(this.countGrade("E"))));
         rows[0].children[7].appendChild(document.createTextNode(String(this.countPassedCredits())));
         rows[0].children[8].appendChild(document.createTextNode(String(Math.round(100 * this.calcTotalGradePoint() / this.conutRegisteredCredits()) / 100)));
+        rows[0].children[0].classList.add('categorytable');
+        rows[0].children[1].classList.add('categorytable');
+        rows[0].children[2].classList.add('categorytable');
+        rows[0].children[3].classList.add('categorytable');
+        rows[0].children[4].classList.add('categorytable');
+        rows[0].children[5].classList.add('categorytable');
+        rows[0].children[6].classList.add('categorytable');
+        rows[0].children[7].classList.add('categorytable');
+        rows[0].children[8].classList.add('categorytable');
+        for (const td of rows[0].children) {
+            if ((_a = td.textContent) === null || _a === void 0 ? void 0 : _a.match(/\d+/)) {
+                if (td.textContent == '0') {
+                    td.classList.add('zero');
+                }
+                else {
+                    td.classList.add('bold');
+                }
+            }
+        }
         return rows;
     }
 }
@@ -232,28 +250,40 @@ const calcGPA = function (rawStr) {
     DETAILS.innerHTML = "";
     if (registered != 0) {
         const table = document.createElement('table');
+        table.classList.add('categorytable');
         const row = new Array();
         row.push(document.createElement('tr'));
+        row[0].classList.add('categorytable');
         row[0].appendChild(document.createElement('th'));
         row[0].children[0].appendChild(document.createTextNode('類'));
+        row[0].children[0].classList.add('categorytable');
         row[0].appendChild(document.createElement('th'));
-        row[0].children[1].appendChild(document.createTextNode('郡'));
+        row[0].children[1].appendChild(document.createTextNode('群'));
+        row[0].children[1].classList.add('categorytable');
         row[0].appendChild(document.createElement('th'));
         row[0].children[2].appendChild(document.createTextNode('AA'));
+        row[0].children[2].classList.add('categorytable');
         row[0].appendChild(document.createElement('th'));
         row[0].children[3].appendChild(document.createTextNode('A'));
+        row[0].children[3].classList.add('categorytable');
         row[0].appendChild(document.createElement('th'));
         row[0].children[4].appendChild(document.createTextNode('B'));
+        row[0].children[4].classList.add('categorytable');
         row[0].appendChild(document.createElement('th'));
         row[0].children[5].appendChild(document.createTextNode('C'));
+        row[0].children[5].classList.add('categorytable');
         row[0].appendChild(document.createElement('th'));
         row[0].children[6].appendChild(document.createTextNode('D'));
+        row[0].children[6].classList.add('categorytable');
         row[0].appendChild(document.createElement('th'));
         row[0].children[7].appendChild(document.createTextNode('E'));
+        row[0].children[7].classList.add('categorytable');
         row[0].appendChild(document.createElement('th'));
         row[0].children[8].appendChild(document.createTextNode('取得単位数'));
+        row[0].children[8].classList.add('categorytable');
         row[0].appendChild(document.createElement('th'));
         row[0].children[9].appendChild(document.createTextNode('GPA'));
+        row[0].children[9].classList.add('categorytable');
         for (const c of categories) {
             row.push(...c.getTableRow());
         }
